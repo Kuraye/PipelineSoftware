@@ -1,38 +1,33 @@
+The Jenkinsfile in your GitHub repository should define the pipeline stages, steps, and configuration for your Jenkins job. Here's a basic example for a React application:
+
+Groovy
 pipeline {
-    agent { 
-        node {
-            label 'docker-agent-python'
-            }
-      }
-    triggers {
-        pollSCM '* * * * *'
-    }
+    agent any
     stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/Kuraye/PipelineSoftware.git'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
         stage('Build') {
             steps {
-                echo "Building.."
-                sh '''
-                cd myapp
-                pip install -r requirements.txt
-                '''
+                sh 'npm run build'
             }
         }
         stage('Test') {
             steps {
-                echo "Testing.."
-                sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Brad
-                '''
+                sh 'npm run test'
             }
         }
-        stage('Deliver') {
+        stage('Deploy') {
             steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
-                '''
+                // Your deployment steps
+                sh 'scp -r build/ your_server_address:/path/to/deployment/directory'
             }
         }
     }
