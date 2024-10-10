@@ -24,9 +24,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Your deployment steps
-                sh 'scp -r build/ your_server_address:/path/to/deployment/directory'
+                sh 'docker-compose up -d'
             }
+        }
         }
     }
 }
