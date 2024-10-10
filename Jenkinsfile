@@ -1,6 +1,4 @@
-The Jenkinsfile in your GitHub repository should define the pipeline stages, steps, and configuration for your Jenkins job. Here's a basic example for a React application:
 
-Groovy
 pipeline {
     agent any
     stages {
