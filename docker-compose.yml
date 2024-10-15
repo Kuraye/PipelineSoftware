@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  app-dsv:
+    build: .
+    image: localhost:5000/jenkins-pipeline-example:dsv
+    container_name: app-dsv
+    ports:
+      - 8081:8081
+    
+  app-uat:
+    build: .
+    image: localhost:5000/jenkins-pipeline-example:uat
+    container_name: app-uat
+    ports:
+      - 8085:8085
+    environment:
+      - SPRING_PROFILES_ACTIVE=uat
+
+  app-prd:
+    build: .
+    image: localhost:5000/jenkins-pipeline-example:prd
+    container_name: app-prd
+    ports:
+      - 8090:8090
+    environment:
+      - SPRING_PROFILES_ACTIVE=prd
+
+  docker-registry:
+    image: registry:2
+    container_name: docker-registry
+    ports:
+      - 5000:5000    
+
+  jenkins:
+    build: custom-dockerfiles/jenkins-as-code-scaffold
+    container_name: jenkins
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080
+      - 50000:50000
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false -Dhudson.model.DirectoryBrowserSupport.CSP="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';
+
+  sonar:
+    build: custom-dockerfiles/sonarqube
+    container_name: sonarqube
+    ports:
+      - 9000:9000
+      - 9092:9092
+    environment:  
+      - JAVA_OPTS=-Dsonar.forceAuthentication=false  
+
+  chrome:
+    image: selenium/standalone-chrome:4.0.0-rc-1-prerelease-20210713
+    container_name: chrome
+    shm_size: 2gb
+    ports:
+      - "7900:7900"
+      - "4444:4444"
