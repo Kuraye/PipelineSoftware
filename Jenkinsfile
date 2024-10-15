@@ -21,9 +21,9 @@ pipeline {
     }
     stage('Test') {
       steps {
-        
-        sh 'npm run test --passWithNoTests'
+        sh './jenkins/scripts/test.sh' 
       }
+        
     }
     stage('Deploy') {
       steps {
