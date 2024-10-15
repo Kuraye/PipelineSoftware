@@ -11,9 +11,7 @@ pipeline {
     }
     stage('Install Dependencies') {
       steps {
-        sh 'npm install'
-        sh 'npm install -g serve'
-  
+        sh 'npm install'  
       }
     }
     stage('Build') {
@@ -28,7 +26,6 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        serve -s build
         sh 'docker-compose up -d'
       }
     }
