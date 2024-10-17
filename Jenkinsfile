@@ -1,4 +1,4 @@
-opipeline {
+pipeline {
   agent any
   tools {
     nodejs '22.9.0'
