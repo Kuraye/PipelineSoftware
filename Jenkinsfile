@@ -1,4 +1,4 @@
-pipeline {
+opipeline {
   agent any
   tools {
     nodejs '22.9.0'
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh 'docker-compose up -d'
+        echo 'deploying'
       }
     }
   }
