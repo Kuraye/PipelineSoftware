@@ -19,8 +19,9 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Test Leadership') {
-            steps {
+       stage('Test Leadership') {
+        steps {
+            script {
                 if (fileExists('PolicyDocument.pdf')) {
                     echo "File exists"
                 } else {
@@ -28,6 +29,7 @@ pipeline {
                 }
             }
         }
+    }
         stage('Deploy') {
             steps {
                 echo 'Deploying'
