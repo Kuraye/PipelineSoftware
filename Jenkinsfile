@@ -21,11 +21,10 @@ pipeline {
     }
      stage('Test Leadership') {
       steps {
-        if (fileExists('PolicyDocument.pdf')) {
-          echo 'Yes'
-        } 
-        else {
-          echo 'No'
+          when { expression { return fileExists ('myfile') } }
+          steps {
+               echo "file exists"
+              }
         }
       }
     }
