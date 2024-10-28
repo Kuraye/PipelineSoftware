@@ -26,8 +26,6 @@ pipeline {
                 } else {
                     echo "Policy document missing"
                 }
-    }
-}
             }
         }
         stage('Deploy') {
