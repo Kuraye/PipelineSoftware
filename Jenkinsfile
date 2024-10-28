@@ -21,14 +21,13 @@ pipeline {
         }
         stage('Test Leadership') {
             steps {
-                when {
-                    expression {
-                        return fileExists('PolicyDocument.pdf')
-                    }
-                }
-                steps {
+                if (fileExists('PolicyDocument.pdf')) {
                     echo "File exists"
+                } else {
+                    echo "Policy document missing"
                 }
+    }
+}
             }
         }
         stage('Deploy') {
