@@ -21,7 +21,7 @@ pipeline {
     }
      stage('Test Leadership') {
       steps {
-          when { expression { return fileExists ('myfile') } }
+          when { expression { return fileExists ('PolicyDocument.pdf') } }
           steps {
                echo "file exists"
               }
