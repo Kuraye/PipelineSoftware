@@ -36,7 +36,7 @@ pipeline {
                     // Deploy the image to your container platform
                     withDockerContainer([image: 'glassfish', containers: 'Deployserver']) {
                         // Additional steps for deployment (e.g., starting the container, configuring services)
-                        sh 'docker start glassfish'
+                        sh 'docker start Deployserver'
                     }
                 }
             }
