@@ -23,12 +23,17 @@ pipeline {
             steps {
                 script {
                     if (fileExists('PolicyDocument.pdf')) {
-                        echo "5.1.A. ✅ Policy document found"
+                        echo "5.1.A. ✅ Policy document exists"
+                        def fileContent = readFile('PolicyDocument.pdf')
+                        if (fileContent.contains('commitment to compliance')) {
+                            echo "5.2.C. ✅ Policy document contains 'commitment to compliance'"
+                        } else {
+                            echo "5.2.C. ❌ Policy document does not contain 'commitment to compliance'"
+                        }
                     } else {
                         echo "5.1.A. ❌ Policy document missing"
                     }
                 }
-            }
         }
         stage('Deploy to Container') {
             steps {
