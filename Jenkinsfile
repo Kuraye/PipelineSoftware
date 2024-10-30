@@ -23,9 +23,9 @@ pipeline {
             steps {
                 script {
                     if (fileExists('PolicyDocument.pdf')) {
-                        echo "File exists"
+                        echo "5.1.A. ✅ Policy document found"
                     } else {
-                        echo "Policy document missing"
+                        echo "5.1.A. ❌ Policy document missing"
                     }
                 }
             }
