@@ -34,12 +34,13 @@ pipeline {
                         echo "5.1.A. ❌ Policy document missing"
                     }
                 }
+            }
         }
         stage('Deploy to Container') {
             steps {
                 script {
                     // Deploy the image to your container platform
-                    withDockerContainer([image: 'glassfish', containers: 'Deployserver']) {
+                    withDockerContainer(image: 'glassfish', serverName: 'Deployserver') {
                         // Additional steps for deployment (e.g., starting the container, configuring services)
                         sh 'docker start Deployserver'
                     }
