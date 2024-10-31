@@ -41,9 +41,10 @@ pipeline {
             steps {
                 script {
                     // Deploy the image to your container platform
-                    withDockerContainer(image: 'glassfish', serverName: 'Deployserver') {
+                    //withDockerContainer(image: 'glassfish', serverName: 'Deployserver') {
                         // Additional steps for deployment (e.g., starting the container, configuring services)
-                        sh 'docker start Deployserver'
+                        //sh 'docker start Deployserver'
+                    echo 'deploying...'
                     }
                 }
             }
