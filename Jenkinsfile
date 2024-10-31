@@ -24,7 +24,7 @@ pipeline {
                         script {
                             def reportFile = 'test_report.txt'
                             if (fileExists('PolicyDocument.pdf')) {
-                                writeFile file: reportFile, text: "5.1.A. Policy document exists\n", append: true
+                                writeFile file: reportFile, text: "5.1.A. Policy document exists\n"
                                 def fileContent = readFile('PolicyDocument.pdf')
                                 if (fileContent.contains('commitment to compliance')) {
                                     writeFile file: reportFile, text: "5.2.C. Policy document contains 'commitment to compliance'\n", append: true
