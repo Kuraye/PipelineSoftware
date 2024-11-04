@@ -4,6 +4,11 @@ pipeline {
         nodejs '22.9.0'
     }
     stages {
+    stage('Clean Workspace') {
+        steps {
+            cleanWs()
+        }
+    stages {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/Kuraye/PipelineSoftware.git'
