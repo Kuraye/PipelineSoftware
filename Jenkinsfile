@@ -31,13 +31,13 @@ pipeline {
             steps {
                 script {
                     def reportFile = 'test_report.txt'
-                    writeFile(file: reportFile, text: "This document has the results if the application complies with the ISO 27001 and NEN 7510\n", append: true)
-        
+                    writeFile(file: reportFile, text: "# This document has the results if the application complies with the ISO 27001 and NEN 7510\n")
+
                     if (fileExists('PolicyDocument.pdf')) {
                         writeFile(file: reportFile, text: "5.1.A. Policy document exists\n", append: true)
-        
-                        def fileContent = readFile('PolicyDocument.pdf')
-                        writeFile(file: reportFile, text: "5.2.A. ${fileContent.contains('Organization specific') ? 'Policy document is tailored' : '[!] Policy document is not tailored'}\n", append: true)
+
+                        def fileContent = readFile('PolicyDocument.pdf').toLowerCase() // Convert to lowercase for case-insensitive comparison
+                        writeFile(file: reportFile, text: "5.2.A. ${fileContent.contains('organization specific') ? 'Policy document is tailored' : '[!] Policy document is not tailored'}\n", append: true)
                         writeFile(file: reportFile, text: "5.2.C. ${fileContent.contains('commitment to compliance') ? 'Policy document contains commitment to compliance' : '[!] Policy document does not contain commitment to compliance'}\n", append: true)
                     } else {
                         writeFile(file: reportFile, text: "[!] 5.1.A. Policy document missing\n", append: true)
