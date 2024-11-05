@@ -32,17 +32,15 @@ pipeline {
                 script {
                     def reportFile = 'test_report.txt'
                     writeFile file: reportFile, text: "# This document has the results if the application complies with the ISO 27001 and NEN 7510\n"
-
+        
                     if (fileExists('PolicyDocument.pdf')) {
                         def content = readFile(file: reportFile)
                         content += "\nPolicy document exists\n"
                         writeFile file: reportFile, text: content
-                    else {
+                    } else {
                         def content = readFile(file: reportFile)
-                        content += "\n[!] Policy document doe not exist\n"
+                        content += "\n[!] Policy document does not exist\n"
                         writeFile file: reportFile, text: content
-                        
-                    }
                     }
                 }
             }
