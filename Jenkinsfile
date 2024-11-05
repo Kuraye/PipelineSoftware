@@ -38,7 +38,7 @@ pipeline {
                         content += "\nPolicy document exists\n"
         
                         // Check for 'commitment to compliance'
-                        if (content.contains('Commitment to compliance')) {
+                        if (fileContent.toLowerCase().contains('commitment to compliance')) {
                             content += "\n5.2.C. Policy document contains Commitment to compliance\n"
                         } else {
                             content += "\n[!] 5.2.C. Policy document does not contain Commitment to compliance\n"
