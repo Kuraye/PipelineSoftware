@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     def reportFile = 'test_report.txt'
-                    writeFile(file: reportFile, text: "# This document has the results if the application complies with the ISO 27001 and NEN 7510\n")
+                    writeFile(file: reportFile, text: "This document has the results if the application complies with the ISO 27001 and NEN 7510\n", append: true)
         
                     if (fileExists('PolicyDocument.pdf')) {
                         writeFile(file: reportFile, text: "5.1.A. Policy document exists\n", append: true)
