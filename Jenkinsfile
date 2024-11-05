@@ -35,14 +35,22 @@ pipeline {
         
                     if (fileExists('PolicyDocument.pdf')) {
                         def content = readFile(file: reportFile)
-                        content += "\nPolicy document exists\n"        
-                        def fileContent = readFile('PolicyDocument.pdf')
-                            if (fileContent.toLowerCase().contains('Commitment to compliance')) {
-                                content += "\n5.2.C. Policy document contains Commitment to compliance\n"
-                            } else {
-                                content += "\n[!] 5.2.C. Policy document does not contain Commitment to compliance\n"
-                            }
-                       writeFile file: reportFile, text: content
+                        content += "\n5.1.A. Policy document exists\n"
+        
+                        def fileContent = readFile('PolicyDocument.pdf').toLowerCase()
+                        if (fileContent.contains('commitment to compliance')) {
+                            content += "\n5.2.C. Policy document contains Commitment to compliance\n"
+                        } else {
+                            content += "\n[!] 5.2.C. Policy document does not contain Commitment to compliance\n"
+                        }
+        
+                        if (fileContent.contains('organization specific')) {
+                            content += "\n5.2.A. Policy document is tailored\n"
+                        } else {
+                            content += "\n[!] 5.2.A. Policy document is not tailored\n"
+                        }
+        
+                        writeFile file: reportFile, text: content
                     } else {
                         def content = readFile(file: reportFile)
                         content += "\n[!] Policy document does not exist\n"
