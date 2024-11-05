@@ -37,7 +37,7 @@ pipeline {
                         def content = readFile(file: reportFile)
                         content += "\nPolicy document exists\n"
         
-                        // Check for 'commitment to compliance'
+                        def fileContent = readFile('PolicyDocument.pdf')
                         if (fileContent.toLowerCase().contains('commitment to compliance')) {
                             content += "\n5.2.C. Policy document contains Commitment to compliance\n"
                         } else {
