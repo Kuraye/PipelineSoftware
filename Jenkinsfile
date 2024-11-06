@@ -49,6 +49,11 @@ pipeline {
                         } else {
                             content += "\n[!] 5.2.A. Policy document is not tailored\n"
                         }
+                        if (fileContent.contains('Security Objectives')) {
+                            content += "\n5.2.B. Objective included\n"
+                        } else {
+                            content += "\n[!] 5.2.B. Objective not included\n"
+                        }
         
                         writeFile file: reportFile, text: content
                     } else {
