@@ -38,11 +38,6 @@ pipeline {
                         content += "\n5.1.A. Policy document exists\n"
         
                         def fileContent = readFile('PolicyDocument.pdf').toLowerCase()
-                        if (fileContent.contains('commitment to compliance')) {
-                            content += "\n5.2.C. Policy document contains Commitment to compliance\n"
-                        } else {
-                            content += "\n[!] 5.2.C. Policy document does not contain Commitment to compliance\n"
-                        }
         
                         if (fileContent.contains('organization specific')) {
                             content += "\n5.2.A. Policy document is tailored\n"
@@ -53,6 +48,11 @@ pipeline {
                             content += "\n5.2.B. Objective included\n"
                         } else {
                             content += "\n[!] 5.2.B. Objective not included\n"
+                        }
+                        if (fileContent.contains('commitment to compliance')) {
+                            content += "\n5.2.C. Policy document contains Commitment to compliance\n"
+                        } else {
+                            content += "\n[!] 5.2.C. Policy document does not contain Commitment to compliance\n"
                         }
         
                         writeFile file: reportFile, text: content
