@@ -7,5 +7,5 @@ test('Check PDF Content', async () => {
   const text = pdfData.text;
 
   expect(text).toContain('Commitment to compliance');
-  expect(text).toContain('Organization specific');
+  expect(text).toContain('Organization Specific');
 });
