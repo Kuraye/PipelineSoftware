@@ -3,11 +3,14 @@ const pdfParse = require('pdf-parse');
 describe('PDF Content Tests', () => {
   it('should check if the PDF file exists', async () => {
     const pdfPath = 'PolicyDocument.pdf';
-    expect(fs.existsSync(pdfPath)).toBe(true);
+
+    const pdfData = await pdfParse(pdfPath);
+    expect(pdfData).toBeDefined();
   });
 
   it('should check for specific strings in the PDF', async () => {
     const pdfPath = 'PolicyDocument.pdf';
+
     const pdfData = await pdfParse(pdfPath);
     const text = pdfData.text.toLowerCase();
 
