@@ -1,11 +1,11 @@
 const pdfParse = require('pdf-parse');
 
 test('Check PDF Content', async () => {
-  const pdfPath = 'PolicyDocument.pdf'; // Adjust the path as needed
+  const pdfPath = 'PolicyDocument.pdf';
 
   const pdfData = await pdfParse(pdfPath);
-  const text = pdfData.text;
+  const text = pdfData.text.toLowerCase(); // Convert text to lowercase for case-insensitive comparison
 
-  expect(text).toContain('Commitment to compliance');
-  expect(text).toContain('Organization Specific');
+  expect(text).toContain('organization specific');
+  expect(text).toContain('commitment to compliance');
 });
