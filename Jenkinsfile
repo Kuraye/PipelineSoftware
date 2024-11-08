@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install --save-dev jest'
+                sh 'npm install --save-dev jest pdf-parse'
             }
         }
         stage('Build') {
