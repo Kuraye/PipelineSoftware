@@ -20,8 +20,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install --save-dev jest pdf-parse'
-                sh 'npm install --save-dev @babel/core @babel/preset-env'
-                sh 'npm install axios'
             }
         }
         stage('Build') {
