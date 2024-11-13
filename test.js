@@ -26,10 +26,13 @@ describe('PDF Content Tests', () => {
       }
 
       // Count the occurrences of "[!" in the report file
-      const reportContent = fs.readFileSync(reportFile, 'utf-8');
-      const nonComplianceCount = reportContent.match(/\[\!\]/g).length;
-
-      fs.appendFileSync(reportFile, `\n\nTotal Non-Compliance Issues: ${nonComplianceCount}`);
+      try {
+        const reportContent = fs.readFileSync(reportFile, 'utf-8');
+        const nonComplianceCount = reportContent.match(/\[\!\]/g).length;
+        fs.appendFileSync(reportFile, `\n\nTotal Non-Compliance Issues: ${nonComplianceCount}`);
+      } catch (error) {
+        console.error('Error reading or writing to the report file:', error);
+      }
     } else {
       fs.writeFileSync('test_report.txt', "[!] 5.1.A. Policy document missing\n");
     }
