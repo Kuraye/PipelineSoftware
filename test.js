@@ -32,7 +32,6 @@ describe('PDF Content Tests', () => {
         fs.appendFileSync(reportFile, "[!] 5.2.C. Policy document does not contain Commitment to compliance\n");
         nonComplianceList.push('5.2.C');
       }
-      });
     } else {
       fs.writeFileSync('test_report.txt', "[!] 5.1.A. Policy document missing\n");
       nonComplianceList.push('5.1.A');
