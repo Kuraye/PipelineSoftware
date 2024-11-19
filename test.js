@@ -12,7 +12,7 @@ describe('PDF Content Tests', () => {
     if (fs.existsSync(pdfPath)) {
       const pdfData = await pdfParse(pdfPath);
       const text = pdfData.text.toLowerCase();
-
+      fs.writeFileSync('test_report.txt', "    5.1.A. Policy document exists\n");
       if (text.includes('organization specific')) {
         fs.appendFileSync(reportFile, "    5.2.A. Policy document is tailored\n");
       } else {
