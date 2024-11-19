@@ -39,8 +39,22 @@ describe('PDF Content Tests', () => {
       nonComplianceList.push('5.1.A');
     }
 
-    if (fs.existsSync(riskTreatmentPlanPath)) {
-      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
+  if (fs.existsSync(riskTreatmentPlanPath)) {
+    fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists")
+    fs.readFile(riskTreatmentPlanPath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading file:', err);
+        fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan could not be read\n");
+        nonComplianceList.push('8.1.A');
+      } else {
+        if (data.includes('treatment plan details')) {
+          fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan contains treatment plan details\n");
+        } else {
+          fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan does not contain treatment plan details\n");
+          nonComplianceList.push('8.1.B');
+        }
+      }
+    });
     } else {
       fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
       nonComplianceList.push('8.1.A');
