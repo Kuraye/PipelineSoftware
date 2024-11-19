@@ -34,7 +34,6 @@ describe('PDF Content Tests', () => {
         nonComplianceList.push('5.2.C');
       }
 
-      );
     } else {
       fs.writeFileSync('test_report.txt', "[!] 5.1.A. Policy document missing\n");
       nonComplianceList.push('5.1.A');
