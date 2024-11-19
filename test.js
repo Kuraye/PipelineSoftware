@@ -20,7 +20,7 @@ describe('PDF Content Tests', () => {
         fs.appendFileSync(reportFile, "[!] 5.2.A. Policy document is not tailored\n");
         nonComplianceList.push('5.2.A');
       }
-      if (text.includes('Security Objectives')) {
+      if (text.includes('security objectives')) {
         fs.appendFileSync(reportFile, "    5.2.B. Security Objectives documented\n");
       } else {
         fs.appendFileSync(reportFile, "[!] 5.2.B. Security Objectives not documented\n");
