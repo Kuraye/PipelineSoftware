@@ -6,6 +6,7 @@ describe('PDF Content Tests', () => {
 
   it('should check if the PDF file exists and its content', async () => {
     const pdfPath = 'PolicyDocument.pdf';
+    const RiskTreatmentPlan = 'Risk_Treatment_Plan.csv'
 
     if (fs.existsSync(pdfPath)) {
       const pdfData = await pdfParse(pdfPath);
@@ -47,5 +48,16 @@ describe('PDF Content Tests', () => {
         fs.appendFileSync(reportFile, `- ${item}\n`);
       });
     }
+    if (fs.existsSync(RiskTreatmentPlan)) {
+      const pdfData = await pdfParse(pdfPath);
+      const text = pdfData.text.toLowerCase();
+      const reportFile = 'test_report.txt';
+      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment plan document exists\n");
+    } else {
+      fs.writeFileSync('test_report.txt', "[!] 8.1.A. Policy document missing\n");
+      nonComplianceList.push('8.1.A');
+      nonComplianceList.forEach(item => {
+        fs.appendFileSync(reportFile, `- ${item}\n`);
+    });
   });
 });
