@@ -49,6 +49,7 @@ describe('PDF Content Tests', () => {
     
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
+    }
     });
   });
 });
