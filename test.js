@@ -12,7 +12,8 @@ describe('PDF Content Tests', () => {
     if (fs.existsSync(pdfPath)) {
       const pdfData = await pdfParse(pdfPath);
       const text = pdfData.text.toLowerCase();
-      fs.writeFileSync('test_report.txt', "    5.1.A. Policy document exists\n");
+      fs.writeFileSync('test_report.txt', "5.1.A. Policy document exists\n");
+
       if (text.includes('organization specific')) {
         fs.appendFileSync(reportFile, "    5.2.A. Policy document is tailored\n");
       } else {
@@ -32,20 +33,26 @@ describe('PDF Content Tests', () => {
         fs.appendFileSync(reportFile, "[!] 5.2.C. Policy document does not contain Commitment to compliance\n");
         nonComplianceList.push('5.2.C');
       }
+
+      fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
+      nonComplianceList.forEach(item => {
+        fs.appendFileSync(reportFile, `- ${item}\n`);
+      });
     } else {
       fs.writeFileSync('test_report.txt', "[!] 5.1.A. Policy document missing\n");
       nonComplianceList.push('5.1.A');
     }
 
-      if (fs.existsSync(riskTreatmentPlanPath)) {
-        fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
-      } else {
-        fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
+    if (fs.existsSync(riskTreatmentPlanPath)) {
+      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+    } else {
+      fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
       nonComplianceList.push('8.1.A');
-      }
+    }
 
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
-    
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
-    }
+    });
+  });
+});
