@@ -60,9 +60,9 @@ describe('PDF Content Tests', () => {
       nonComplianceList.push('8.1.A');
     }
 
-    fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
-    nonComplianceList.forEach(item => {
-      fs.appendFileSync(reportFile, `- ${item}\n`);
+  fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
+  nonComplianceList.forEach(item => {
+    fs.appendFileSync(reportFile, `- ${item}\n`);
     });
   });
 });
