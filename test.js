@@ -40,7 +40,7 @@ describe('PDF Content Tests', () => {
     }
 
     if (fs.existsSync(riskTreatmentPlanPath)) {
-      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
     } else {
       fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
       nonComplianceList.push('8.1.A');
