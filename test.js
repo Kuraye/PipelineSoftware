@@ -57,11 +57,11 @@ describe('PDF Content Tests', () => {
     });
 
     if (fs.existsSync(riskTreatmentPlanPath)) {
-      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
 
       const results = [];
       fs.createReadStream(riskTreatmentPlanPath)
-        .pipe(csv())
+        .pipe(csvParser()) // Use csvParser() to parse the CSV data
         .on('data', (data) => results.push(data))
         .on('end', () => {
           // Check for required columns and data
