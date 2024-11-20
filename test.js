@@ -1,5 +1,6 @@
 const pdfParse = require('pdf-parse');
 const fs = require('fs');
+const csvParser = require('csv-parser');
 
 describe('PDF Content Tests', () => {
   const nonComplianceList = [];
@@ -55,22 +56,26 @@ describe('PDF Content Tests', () => {
       }
     });
 
-    try {
-      const riskTreatmentPlanData = await riskTreatmentPlanPromise;
-      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
+    if (fs.existsSync(riskTreatmentPlanPath)) {
+      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
 
-      if (riskTreatmentPlanData.includes('treatment plan details')) {
-        fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan contains treatment plan details\n");
-      } else {
-        fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan does not contain treatment plan details\n");
-        nonComplianceList.push('8.1.B');
-      }
-    } catch (error) {
-      fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing or could not be read\n");
+      const results = [];
+      fs.createReadStream(riskTreatmentPlanPath)
+        .pipe(csv())
+        .on('data', (data) => results.push(data))
+        .on('end', () => {
+          // Check for required columns and data
+          if (!results.some(row => row['Risk ID'] && row['Treatment'] && row['Owner'])) {
+            fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing required columns\n");
+            nonComplianceList.push('8.1.B');
+          } else {
+    }
+        });
+    } else {
+      fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
       nonComplianceList.push('8.1.A');
     }
 
-    // Write non-compliance list to report file
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
