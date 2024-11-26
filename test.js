@@ -57,7 +57,7 @@ describe('PDF Content Tests', () => {
           });
       
          if (fs.existsSync(riskTreatmentPlanPath)) {
-              fs.appendFileSync(reportFile, "  8.1.A. Risk Treatment Plan exists\n");
+              fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
         
               const results = [];
               await new Promise((resolve) => {
@@ -72,14 +72,13 @@ describe('PDF Content Tests', () => {
                 fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
                 nonComplianceList.push('8.1.B.');
               } else {
-                fs.appendFileSync(reportFile, "  8.1.B. Risk Treatment Plan meets details\n");
-                // ... (remove from non-compliance list)
+                fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
+
               }
             } else {
               fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
             }
 
-    // Print the non-compliance list after all checks
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
