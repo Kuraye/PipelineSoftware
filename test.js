@@ -43,22 +43,23 @@ describe('PDF Content Tests', () => {
       fs.writeFileSync(reportFile, "[!] 5.1.A. Policy document missing\n");
       nonComplianceList.push('5.1.A');
     }
-    const logFilePath = '/path/to/internal_communications/system.log';
-    
-    fs.readFile(logFilePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error reading log file:', err);
-        fs.appendFileSync(reportFile, "[!] 9.1.A. Error reading log file\n");
-        nonComplianceList.push('9.1.A.');
-      } else {
-        if (data.includes('policy document')) {
-          fs.appendFileSync(reportFile, "  9.1.A. Policy document communication confirmed\n");
-        } else {
-          fs.appendFileSync(reportFile, "[!] 9.1.A. Policy document communication not confirmed\n");
-          nonComplianceList.push('9.1.A.');
-        }
-      }
-    });
+        await new Promise((resolve) => {
+          fs.readFile(logFilePath, 'utf8', (err, data) => {
+            if (err) {
+              console.error('Error reading log file:', err);
+              fs.appendFileSync(reportFile, "[!] 5.2.F. Error reading log file\n");
+              nonComplianceList.push('5.2.F.');
+            } else {
+              if (data.includes('policy document')) {
+                fs.appendFileSync(reportFile, "    5.2.F. Policy document communication confirmed\n");
+              } else {
+                fs.appendFileSync(reportFile, "[!] 5.2.F. Policy document communication not confirmed\n");
+                nonComplianceList.push('5.2.F.');
+              }
+            }
+            resolve();
+          });
+        });
 
         // Risk Treatment Plan checks
           const riskTreatmentPlanPromise = new Promise((resolve, reject) => {
