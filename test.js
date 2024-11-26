@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const pdfParse = require('pdf-parse');
 const fs = require('fs');
 const csvParser = require('csv-parser');
@@ -8,6 +9,7 @@ describe('PDF Content Tests', () => {
   it('should check if the PDF file and risk treatment plan exist and their content', async () => {
     const pdfPath = 'PolicyDocument.pdf';
     const riskTreatmentPlanPath = 'Risk_Treatment_Plan.csv';
+    const logFilePath = 'system.log';
     const reportFile = 'test_report.txt';
 
     // PDF checks
@@ -36,6 +38,7 @@ describe('PDF Content Tests', () => {
         fs.appendFileSync(reportFile, "[!] 5.2.C. Policy document does not contain Commitment to compliance\n");
         nonComplianceList.push('5.2.C');
       }
+      
     } else {
       fs.writeFileSync(reportFile, "[!] 5.1.A. Policy document missing\n");
       nonComplianceList.push('5.1.A');
@@ -78,6 +81,15 @@ describe('PDF Content Tests', () => {
             } else {
               fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
             }
+        const command = `grep -q "policy document" ${logFilePath}`;
+        const result = execSync(command).toString().trim();
+
+        if (result === '0') {
+          fs.appendFileSync(reportFile, "    9.1.A. Policy document communication confirmed\n");
+        } else {
+          fs.appendFileSync(reportFile, "[!] 9.1.A. Policy document communication not confirmed\n");
+          nonComplianceList.push('9.1.A.');
+        }
 
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
