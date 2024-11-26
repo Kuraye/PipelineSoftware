@@ -77,9 +77,9 @@ describe('PDF Content Tests', () => {
     }
     
     // Print the non-compliance list
-    fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
-    nonComplianceList.forEach(item => {
-      fs.appendFileSync(reportFile, `- ${item}\n`);
+  fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
+  nonComplianceList.forEach(item => {
+     fs.appendFileSync(reportFile, `- ${item}\n`);
     });
   });
 });
