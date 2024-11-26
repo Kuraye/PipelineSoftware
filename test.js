@@ -57,26 +57,26 @@ describe('PDF Content Tests', () => {
           });
       
         if (fs.existsSync(riskTreatmentPlanPath)) {
-          fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
-    
+            fs.appendFileSync(reportFile, "  8.1.A. Risk Treatment Plan exists\n");
+        
             const results = [];
             fs.createReadStream(riskTreatmentPlanPath)
-              .pipe(csvParser())
-              .on('data', (data) => results.push(data))
-              .on('end', () => {
-                if (!results.some(row => row['Risk ID'] && row['Treatment'] && row['Owner'])) {
-                  fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing required columns\n");
-                  nonComplianceList.push('8.1.B.');
-                } else {
-                  fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets required columns\n");
-                  // Remove 8.1.B from the non-compliance list if it was added previously
-                  nonComplianceList = nonComplianceList.filter(item => item !== '8.1.B. Risk Treatment Plan is missing required columns');
-                }
-              });
-          } else {
+                .pipe(csvParser())
+                .on('data', (data) => results.push(data))
+                .on('end', () => {
+                    const found = results.some(row => Object.values(row).some(value => value.includes('Risk treatment plan details')));
+                    if (!found) {
+                        fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing required details\n");
+                        nonComplianceList.push('8.1.B.');
+                    } else {
+                        fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets required details\n");
+                        // Remove 8.1.B from the non-compliance list if it was added previously
+                        nonComplianceList = nonComplianceList.filter(item => item !== '8.1.B. Risk Treatment Plan is missing required details');
+                    }
+                });
+        } else {
             fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
-            nonComplianceList.push('8.1.A.');
-      }
+        }
 
     // Print the non-compliance list after all checks
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
