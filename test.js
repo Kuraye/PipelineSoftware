@@ -56,8 +56,8 @@ describe('PDF Content Tests', () => {
             }
           });
       
-     if (fs.existsSync(riskTreatmentPlanPath)) {
-      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
+      if (fs.existsSync(riskTreatmentPlanPath)) {
+      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
     
       const results = [];
       fs.createReadStream(riskTreatmentPlanPath)
@@ -66,14 +66,14 @@ describe('PDF Content Tests', () => {
         .on('end', () => {
           if (!results.some(row => row['Risk ID'] && row['Treatment'] && row['Owner'])) {
             fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing required columns\n");
-            nonComplianceList.push('8.1.B.');
+            nonComplianceList.push('8.1.B. Risk Treatment Plan is missing required columns');
           } else {
-            // ... (other checks)
+            fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets required columns\n");
           }
         });
     } else {
       fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
-      nonComplianceList.push('8.1.A.');
+      nonComplianceList.push('8.1.A. Risk Treatment Plan missing');
     }
     
     // Print the non-compliance list
