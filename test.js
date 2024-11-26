@@ -56,9 +56,9 @@ describe('PDF Content Tests', () => {
             }
           });
       
-    if (fs.existsSync(riskTreatmentPlanPath)) {
+ if (fs.existsSync(riskTreatmentPlanPath)) {
       fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
-    
+
       const results = [];
       fs.createReadStream(riskTreatmentPlanPath)
         .pipe(csvParser())
@@ -69,13 +69,19 @@ describe('PDF Content Tests', () => {
             nonComplianceList.push('8.1.B. Risk Treatment Plan is missing required columns');
           } else {
             fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets required columns\n");
+
+            // Additional CSV checks, e.g.,
+            if (!results.every(row => row['Risk ID'].length > 5)) {
+              fs.appendFileSync(reportFile, "[!] 8.1.C. Risk IDs are too short\n");
+              nonComplianceList.push('8.1.C. Risk IDs are too short');
+            }
           }
         });
     } else {
       fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
       nonComplianceList.push('8.1.A. Risk Treatment Plan missing');
     }
-    
+
     // Print the non-compliance list after all checks
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
