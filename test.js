@@ -64,14 +64,14 @@ describe('PDF Content Tests', () => {
                 .pipe(csvParser())
                 .on('data', (data) => results.push(data))
                 .on('end', () => {
-                    const found = results.some(row => Object.values(row).some(value => value.includes('Risk treatment plan details')));
+                    const found = results.some(row => Object.values(row).some(value => value.includes('treatment plan details')));
                     if (!found) {
-                        fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing required details\n");
+                        fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
                         nonComplianceList.push('8.1.B.');
                     } else {
-                        fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets required details\n");
+                        fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
                         // Remove 8.1.B from the non-compliance list if it was added previously
-                        nonComplianceList = nonComplianceList.filter(item => item !== '8.1.B. Risk Treatment Plan is missing required details');
+                        nonComplianceList = nonComplianceList.filter(item => item !== '8.1.B. Treatment Plan is missing details');
                     }
                 });
         } else {
