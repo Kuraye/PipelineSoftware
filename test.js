@@ -43,6 +43,15 @@ describe('PDF Content Tests', () => {
       fs.writeFileSync(reportFile, "[!] 5.1.A. Policy document missing\n");
       nonComplianceList.push('5.1.A');
     }
+          const command = `grep -q "policy document" ${logFilePath}`;
+          const result = execSync(command).toString().trim();
+  
+          if (result === '0') {
+            fs.appendFileSync(reportFile, "    5.2.F. Policy document communication confirmed\n");
+          } else {
+            fs.appendFileSync(reportFile, "[!] 5.2.F. Policy document communication not confirmed\n");
+            nonComplianceList.push('5.2.F.');
+          }
 
         // Risk Treatment Plan checks
           const riskTreatmentPlanPromise = new Promise((resolve, reject) => {
@@ -81,15 +90,6 @@ describe('PDF Content Tests', () => {
             } else {
               fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
             }
-        const command = `grep -q "policy document" ${logFilePath}`;
-        const result = execSync(command).toString().trim();
-
-        if (result === '0') {
-          fs.appendFileSync(reportFile, "    9.1.A. Policy document communication confirmed\n");
-        } else {
-          fs.appendFileSync(reportFile, "[!] 9.1.A. Policy document communication not confirmed\n");
-          nonComplianceList.push('9.1.A.');
-        }
 
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
