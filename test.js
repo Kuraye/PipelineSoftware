@@ -60,6 +60,28 @@ describe('PDF Content Tests', () => {
             resolve();
           });
         });
+    describe('Resource Allocation Check', () => {
+      it('should check for resource allocation', (done) => {
+        const command = 'grep -q "information_security_resources" resources.csv';
+    
+        exec(command, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error executing command: ${error.message}`);
+            return done(error);
+          }
+    
+          if (stdout.trim() === 'Resources allocated') {
+            console.log('    7.1     Resource is allocated');
+            done();
+          } else {
+            console.log('[!] 7.1 Resource is not allocated');
+            // Add to non-compliance list
+            nonComplianceList.push('Resource allocation not found');
+            done(new Error('Resource allocation not found')); // Fail the test
+          }
+        });
+      });
+    });
 
         // Risk Treatment Plan checks
           const riskTreatmentPlanPromise = new Promise((resolve, reject) => {
