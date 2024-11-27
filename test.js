@@ -79,7 +79,7 @@ describe('PDF Content Tests', () => {
             fs.appendFileSync(reportFile, "    7.1.   Resource is allocated\n");
           } catch (error) {
             fs.appendFileSync(reportFile, "[!] 7.1.   Resource is not allocated\n");
-            nonComplianceList.push('7.1. Resource allocation not found');
+            nonComplianceList.push('7.1.');
           }
 
         // Risk Treatment Plan checks
