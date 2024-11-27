@@ -76,9 +76,9 @@ describe('PDF Content Tests', () => {
       
           try {
             await resourceAllocationPromise;
-            fs.appendFileSync(reportFile, "7.1. Resource is allocated\n");
+            fs.appendFileSync(reportFile, "    7.1.   Resource is allocated\n");
           } catch (error) {
-            fs.appendFileSync(reportFile, "[!] 7.1. Resource is not allocated\n");
+            fs.appendFileSync(reportFile, "[!] 7.1.   Resource is not allocated\n");
             nonComplianceList.push('7.1. Resource allocation not found');
           }
 
