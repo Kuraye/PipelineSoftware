@@ -124,9 +124,9 @@ describe('PDF Content Tests', () => {
          fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan is missing!\n");
           nonComplianceList.push('8.1.A.');
     }
-
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
+    });
   });
 });
