@@ -97,31 +97,26 @@ describe('PDF Content Tests', () => {
             }
           });
       
-        if (fs.existsSync(riskTreatmentPlanPath)) {
+       if (fs.existsSync(riskTreatmentPlanPath)) {
           fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
     
-          const results = [];
-          await new Promise((resolve) => {
-            fs.createReadStream(riskTreatmentPlanPath)
-              .pipe(csvParser())
-              .on('data', (data) => {
-                results.push(data);
-                console.log(data); // Log each parsed row
-              })
-              .on('error', (error) => {
-                console.error('Error parsing CSV:', error);
-                // Handle the error
-              })
-              .on('end', resolve);
-          });
+          let foundTreatmentPlanDetails = false;
     
-          const found = results.some(row => row.a1.includes('Treatment Plan Details'));
-          if (found) {
-            fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets details\n");
-          } else {
-            fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
-            nonComplianceList.push('8.1.B.');
-          }
+          fs.createReadStream(riskTreatmentPlanPath)
+            .pipe(csvParser())
+            .on('data', (row) => {
+              if (row['a1'] && row['a1'].includes('Treatment Plan Details')) {
+                foundTreatmentPlanDetails = true;
+              }
+            })
+            .on('end', () => {
+              if (foundTreatmentPlanDetails) {
+                fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets details\n");
+              } else {
+                fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
+                nonComplianceList.push('8.1.B.');
+              }
+            });
 
 
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
