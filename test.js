@@ -98,26 +98,29 @@ describe('PDF Content Tests', () => {
             }
           });
       
-    if (fs.existsSync(riskTreatmentPlanPath)) {
-      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
-
-      const foundTreatmentPlanDetails = await new Promise((resolve) => {
-        let found = false;
-        fs.createReadStream(riskTreatmentPlanPath)
-          .pipe(csvParser())
-          .on('data', (row) => {
-            console.log('Row:', row); // Log the entire row
-            console.log('A1:', row['A1']); // Log the specific A1 column
-            fs.appendFileSync(outputFile, `Row: ${JSON.stringify(row)}\n`);
-            if (row['A1'] && row['A1'].includes('Treatment Plan Details')) {
-              found = true;
-              console.log('Found "Treatment Plan Details" in A1');
-            }
-          })
-          .on('end', () => {
-            resolve(found);
+     if (fs.existsSync(riskTreatmentPlanPath)) {
+      fs.appendFile(reportFile, "8.1.A. Risk Treatment Plan exists\n")
+        .then(() => {
+          const foundTreatmentPlanDetails = new Promise((resolve) => {
+            let found = false;
+            fs.createReadStream(riskTreatmentPlanPath)
+              .pipe(csvParser())
+              .on('data', (row) => {
+                console.log(row); // Log to the console
+                fs.appendFile(reportFile, `Row: ${JSON.stringify(row)}\n`)
+                  .catch(err => console.error('Error appending to file:', err));
+                if (row['A1'] && row['A1'].includes('Treatment Plan Details')) {
+                  found = true;
+                  console.log('Found "Treatment Plan Details" in A1');
+                  fs.appendFile(reportFile, 'Found "Treatment Plan Details" in A1\n')
+                    .catch(err => console.error('Error appending to file:', err));
+                }
+              })
+              .on('end', () => {
+                resolve(found);
+              });
           });
-      });
+
     
           if (foundTreatmentPlanDetails) {
             fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
