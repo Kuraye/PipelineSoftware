@@ -98,7 +98,7 @@ describe('PDF Content Tests', () => {
     });
 
     if (fs.existsSync(riskTreatmentPlanPath)) {
-      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+      fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
 
       const foundTreatmentPlanDetails = await new Promise((resolve) => {
         let found = false;
