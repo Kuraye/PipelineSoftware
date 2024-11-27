@@ -97,28 +97,29 @@ describe('PDF Content Tests', () => {
             }
           });
       
-         if (fs.existsSync(riskTreatmentPlanPath)) {
-              fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
-        
-              const results = [];
-              await new Promise((resolve) => {
-                fs.createReadStream(riskTreatmentPlanPath)
-                  .pipe(csvParser())
-                  .on('data', (data) => results.push(data))
-                  .on('end', resolve);
-              });
-        
-              const found = results.some(row => Object.values(row).some(value => value.includes('treatment plan details')));
-              if (!found) {
-                fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
-                nonComplianceList.push('8.1.B.');
-              } else {
-                fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
+        if (fs.existsSync(riskTreatmentPlanPath)) {
+          fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+    
+          const results = [];
+          await new Promise((resolve) => {
+            fs.createReadStream(riskTreatmentPlanPath)
+              .pipe(csvParser())
+              .on('data', (data) => results.push(data))
+              .on('end', resolve);
+          });
+    
+          const found = results.some(row => Object.values(row).some(value => value.includes('treatment plan details')));
+          if (found) {
+            fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets details\n");
+          } else {
+            fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
+            nonComplianceList.push('8.1.B.');
+          }
+        } else {
+          fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
+          nonComplianceList.push('8.1.A.');
+        }
 
-              }
-            } else {
-              fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan missing\n");
-            }
 
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
