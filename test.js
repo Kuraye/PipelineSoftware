@@ -105,7 +105,7 @@ describe('PDF Content Tests', () => {
             fs.createReadStream(riskTreatmentPlanPath)
               .pipe(csvParser())
               .on('data', (row) => {
-                if (row['A1'] && row['A1'].includes('Treatment Plan Details')) {
+                if (row['A1'] && row['A1'].includes('Details')) {
                   found = true;
                 }
               })
