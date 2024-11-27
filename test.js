@@ -118,12 +118,8 @@ describe('PDF Content Tests', () => {
               }
             });
 
-
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
     });
-  });
 });
-
-
