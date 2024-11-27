@@ -17,24 +17,24 @@ describe('PDF Content Tests', () => {
     if (fs.existsSync(pdfPath)) {
       const pdfData = await pdfParse(pdfPath);
       const text = pdfData.text.toLowerCase();
-      fs.writeFileSync(reportFile, "    5.1.A. Policy document exists\n");
+      fs.writeFileSync(reportFile, "    5.1.A. Policy document exists\n");
 
       if (text.includes('organization specific')) {
-        fs.appendFileSync(reportFile, "    5.2.A. Policy document is tailored\n");
+        fs.appendFileSync(reportFile, "    5.2.A. Policy document is tailored\n");
       } else {
         fs.appendFileSync(reportFile, "[!] 5.2.A. Policy document is not tailored\n");
         nonComplianceList.push('5.2.A');
       }
 
       if (text.includes('security objectives')) {
-        fs.appendFileSync(reportFile, "    5.2.B. Security Objectives documented\n");
+        fs.appendFileSync(reportFile, "    5.2.B. Security Objectives documented\n");
       } else {
         fs.appendFileSync(reportFile, "[!] 5.2.B. Security Objectives not documented\n");
         nonComplianceList.push('5.2.B');
       }
 
       if (text.includes('commitment to compliance')) {
-        fs.appendFileSync(reportFile, "    5.2.C. Policy document contains Commitment to compliance\n");
+        fs.appendFileSync(reportFile, "    5.2.C. Policy document contains Commitment to compliance\n");
       } else {
         fs.appendFileSync(reportFile, "[!] 5.2.C. Policy document does not contain Commitment to compliance\n");
         nonComplianceList.push('5.2.C');
@@ -51,7 +51,7 @@ describe('PDF Content Tests', () => {
           nonComplianceList.push('5.2.F.');
         } else {
           if (data.includes('policy document')) {
-            fs.appendFileSync(reportFile, "    5.2.F. Policy document communication confirmed\n");
+            fs.appendFileSync(reportFile, "    5.2.F. Policy document communication confirmed\n");
           } else {
             fs.appendFileSync(reportFile, "[!] 5.2.F. Policy document communication not confirmed\n");
             nonComplianceList.push('5.2.F.');
@@ -76,7 +76,7 @@ describe('PDF Content Tests', () => {
 
     try {
       await resourceAllocationPromise;
-      fs.appendFileSync(reportFile, "    7.1.   Resource is allocated\n");
+      fs.appendFileSync(reportFile, "    7.1.   Resource is allocated\n");
     } catch (error) {
       fs.appendFileSync(reportFile, "[!] 7.1.   Resource is not allocated\n");
       nonComplianceList.push('7.1.');
