@@ -98,22 +98,24 @@ describe('PDF Content Tests', () => {
           });
       
     if (fs.existsSync(riskTreatmentPlanPath)) {
-          fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
-    
-          const foundTreatmentPlanDetails = await new Promise((resolve) => {
-            let found = false;
-            fs.createReadStream(riskTreatmentPlanPath)
-              .pipe(csvParser())
-              .on('data', (row) => {
-                console.log('Row:', row);
-                if (row['A1'] && row['A1'].includes('Details')) {
-                  found = true;
-                }
-              })
-              .on('end', () => {
-                resolve(found);
-              });
+      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+
+      const foundTreatmentPlanDetails = await new Promise((resolve) => {
+        let found = false;
+        fs.createReadStream(riskTreatmentPlanPath)
+          .pipe(csvParser())
+          .on('data', (row) => {
+            console.log('Row:', row); // Log the entire row
+            console.log('A1:', row['A1']); // Log the specific A1 column
+            if (row['A1'] && row['A1'].includes('Treatment Plan Details')) {
+              found = true;
+              console.log('Found "Treatment Plan Details" in A1');
+            }
+          })
+          .on('end', () => {
+            resolve(found);
           });
+      });
     
           if (foundTreatmentPlanDetails) {
             fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
