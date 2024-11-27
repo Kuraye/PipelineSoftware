@@ -97,29 +97,36 @@ describe('PDF Content Tests', () => {
             }
           });
       
-       if (fs.existsSync(riskTreatmentPlanPath)) {
-          fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+    if (fs.existsSync(riskTreatmentPlanPath)) {
+          fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
     
-          let foundTreatmentPlanDetails = false;
+          const foundTreatmentPlanDetails = await new Promise((resolve) => {
+            let found = false;
+            fs.createReadStream(riskTreatmentPlanPath)
+              .pipe(csvParser())
+              .on('data', (row) => {
+                if (row['a1'] && row['a1'].includes('Treatment Plan Details')) {
+                  found = true;
+                }
+              })
+              .on('end', () => {
+                resolve(found);
+              });
+          });
     
-          fs.createReadStream(riskTreatmentPlanPath)
-            .pipe(csvParser())
-            .on('data', (row) => {
-              if (row['a1'] && row['a1'].includes('Treatment Plan Details')) {
-                foundTreatmentPlanDetails = true;
-              }
-            })
-            .on('end', () => {
-              if (foundTreatmentPlanDetails) {
-                fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets details\n");
-              } else {
-                fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
-                nonComplianceList.push('8.1.B.');
-              }
-            });
+          if (foundTreatmentPlanDetails) {
+            fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
+          } else {
+            fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
+            nonComplianceList.push('8.1.B.');
+          }  
+      } else {
+         fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan is missing!\n");
+          nonComplianceList.push('8.1.A.');
+    }
 
     fs.appendFileSync(reportFile, `\nNon-Compliance List:\n`);
     nonComplianceList.forEach(item => {
       fs.appendFileSync(reportFile, `- ${item}\n`);
-    });
+  });
 });
