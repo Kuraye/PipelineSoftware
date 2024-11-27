@@ -108,9 +108,9 @@ describe('PDF Content Tests', () => {
               .on('end', resolve);
           });
     
-          const found = results.some(row => Object.values(row).some(value => value.includes('treatment plan details')));
+          const found = results.some(row => Object.values(row).some(value => value.includes('Treatment Plan Details')));
           if (found) {
-            fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan meets details\n");
+            fs.appendFileSync(reportFile, "    8.1.B. Risk Treatment Plan has details included\n");
           } else {
             fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing details\n");
             nonComplianceList.push('8.1.B.');
