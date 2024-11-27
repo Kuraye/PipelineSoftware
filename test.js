@@ -60,28 +60,27 @@ describe('PDF Content Tests', () => {
             resolve();
           });
         });
-  describe('Resource Allocation Check', () => {
-    it('should check for resource allocation', (done) => {
-      const command = 'grep -q "information_security_resources" resources.csv';
-  
-       exec(command, (error, stdout, stderr) => {
-         if (error) {
-          console.error(`Error executing command: ${error.message}`);
-          return done(error);
-        }
-     
-         if (stdout.trim() === 'Resources allocated') {
-          console.log('    7.1     Resource is allocated');
-           done();
-        } else {
-          console.log('[!] 7.1 Resource is not allocated');
-            // Add to non-compliance list
-           nonComplianceList.push('Resource allocation not found');
-           done(new Error('Resource allocation not found')); // Fail the test
-         }
-      });
-     });
-  });
+          const resourceAllocationPromise = new Promise((resolve, reject) => {
+          const command = 'grep -q "information_security_resources" resources.csv';
+      
+            exec(command, (error, stdout, stderr) => {
+              if (error) {
+                reject(error);
+              } else if (stdout.trim() === 'Resources allocated') {
+                resolve();
+              } else {
+                reject(new Error('Resource allocation not found'));
+              }
+            });
+          });
+      
+          try {
+            await resourceAllocationPromise;
+            fs.appendFileSync(reportFile, "7.1. Resource is allocated\n");
+          } catch (error) {
+            fs.appendFileSync(reportFile, "[!] 7.1. Resource is not allocated\n");
+            nonComplianceList.push('7.1. Resource allocation not found');
+          }
 
         // Risk Treatment Plan checks
           const riskTreatmentPlanPromise = new Promise((resolve, reject) => {
@@ -127,3 +126,5 @@ describe('PDF Content Tests', () => {
     });
   });
 });
+
+
