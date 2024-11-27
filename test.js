@@ -11,6 +11,7 @@ describe('PDF Content Tests', () => {
     const riskTreatmentPlanPath = 'Risk_Treatment_Plan.csv';
     const logFilePath = 'system.log';
     const reportFile = 'test_report.txt';
+    const outputFile = 'OutputFile.txt';
     fs.writeFileSync(reportFile, "    This document exists as a report where you can see which guidelines you haven't implemented yet in the project. At the end of the list, you will be able to see which non-compliances you still have.\n");
     // PDF checks
     if (fs.existsSync(pdfPath)) {
@@ -99,7 +100,6 @@ describe('PDF Content Tests', () => {
       
     if (fs.existsSync(riskTreatmentPlanPath)) {
       fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
-      const outputFile = 'OutputFile.txt'
 
       const foundTreatmentPlanDetails = await new Promise((resolve) => {
         let found = false;
@@ -108,7 +108,7 @@ describe('PDF Content Tests', () => {
           .on('data', (row) => {
             console.log('Row:', row); // Log the entire row
             console.log('A1:', row['A1']); // Log the specific A1 column
-            fs.appendFileSync(outputFile, `Row: ${JSON.stringify(row)}\n`)
+            fs.appendFileSync(outputFile, `Row: ${JSON.stringify(row)}\n`);
             if (row['A1'] && row['A1'].includes('Treatment Plan Details')) {
               found = true;
               console.log('Found "Treatment Plan Details" in A1');
