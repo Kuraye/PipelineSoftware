@@ -1,7 +1,5 @@
 pipeline {
     agent any
-    tools {
-    }
     stages {
         // Clean Workspace stage
         stage('Clean Workspace') {
