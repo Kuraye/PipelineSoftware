@@ -1,9 +1,6 @@
 pipeline {
-    agent {
-        nodejs '22.9.0'
-    }
+    agent any // Or specify a label if needed
     stages {
-        // Clean Workspace stage
         stage('Clean Workspace') {
             steps {
                 cleanWs()
@@ -30,7 +27,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    nodejs {
+                    nodejs '22.9.0' { // Use the configured Node.js installation
+                        sh 'npm install'
                         sh 'npm run build'
                     }
                 }
