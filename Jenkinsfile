@@ -1,6 +1,10 @@
 pipeline {
-    agent any // Or specify a label if needed
+    agent any
+    tools {
+        nodejs '22.9.0'
+    }
     stages {
+        // Clean Workspace stage
         stage('Clean Workspace') {
             steps {
                 cleanWs()
@@ -13,49 +17,32 @@ pipeline {
                 git url: 'https://github.com/Kuraye/PipelineSoftware.git'
             }
         }
-
         stage('Install Dependencies') {
             steps {
-                script {
-                    nodejs {
-                        sh 'npm install --save-dev jest pdf-parse csv-parser'
-                    }
-                }
+                sh 'npm install --save-dev jest pdf-parse csv-parser'
             }
         }
-
         stage('Build') {
             steps {
-                script {
-                    nodejs '22.9.0' { // Use the configured Node.js installation
-                        sh 'npm install'
-                        sh 'npm run build'
-                    }
-                }
+                sh 'npm run build'
             }
         }
-
-        stage('Test') {
-            steps {
-                script {
-                    nodejs {
-                        sh 'npm test'
-                    }
-                }
+        stage('Test') {         
+             steps {
+                sh 'npm test'          
             }
         }
-
         stage('Deploy to Container') {
             steps {
                 script {
-                    // Replace with your deployment script/commands
-                    // withDockerContainer(image: 'glassfish', serverName: 'Deployserver') {
-                    //     // Additional steps for deployment (e.g., starting the container, configuring services)
-                    //     // sh 'docker start Deployserver'
-                    // }
+                    // Deploy the image to your container platform
+                    //withDockerContainer(image: 'glassfish', serverName: 'Deployserver') {
+                    //    // Additional steps for deployment (e.g., starting the container, configuring services)
+                    //    //sh 'docker start Deployserver'
+                    //}
                     echo 'deploying...'
                 }
             }
         }
     }
-}
+} 
