@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        nodejs '22.9.0'
+    }
     stages {
         // Clean Workspace stage
         stage('Clean Workspace') {
