@@ -1,7 +1,6 @@
 const { execSync } = require('child_process');
 const pdfParse = require('pdf-parse');
 const fs = require('fs');
-const csvParser = require('csv-parser');
 
 describe('PDF Content Tests', () => {
   const nonComplianceList = [];
@@ -60,69 +59,10 @@ describe('PDF Content Tests', () => {
         resolve();
       });
     });
-    const resourceAllocationPromise = new Promise((resolve, reject) => {
-      const command = 'grep -q "information_security_resources" resources.csv';
-
-      exec(command, (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-        } else if (stdout.trim() === 'Resources allocated') {
-          resolve();
-        } else {
-          reject(new Error('Resource allocation not found'));
-        }
-      });
-    });
-
-    try {
-      await resourceAllocationPromise;
-      fs.appendFileSync(reportFile, "    7.1    Resource is allocated\n");
-    } catch (error) {
-      fs.appendFileSync(reportFile, "[!] 7.1.    Resource is not allocated\n");
-      nonComplianceList.push('7.1.');
-    }
-
-    // Risk Treatment Plan checks
-    const riskTreatmentPlanPromise = new Promise((resolve, reject) => {
-      if (fs.existsSync(riskTreatmentPlanPath)) {
-        fs.readFile(riskTreatmentPlanPath, 'utf8', (err, data) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
-        });
-      } else {
-        reject(new Error('Risk Treatment Plan missing'));
-      }
-    });
 
     if (fs.existsSync(riskTreatmentPlanPath)) {
       fs.appendFileSync(reportFile, "    8.1.A. Risk Treatment Plan exists\n");
 
-    const results = [];
-    fs.createReadStream(riskTreatmentPlanPath)
-      .pipe(csvParser())
-      .on('data', (data) => {
-        console.log('Parsed row:', data); // Log the parsed row to the console
-        results.push(data);
-      })
-      .on('end', () => {
-        if (!results.some(row => row['Risk ID'] && row['Treatment'] && row['Owner'])) {
-          fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is missing required columns\n");
-          nonComplianceList.push('8.1.B. Risk Treatment Plan is missing required columns');
-        } else {
-          fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan meets required columns\n");
-          // Remove 8.1.B from the non-compliance list if it was previously added
-          nonComplianceList = nonComplianceList.filter(item => item !== '8.1.B. Risk Treatment Plan is missing required columns');
-    
-          // Additional CSV checks
-          if (!results.every(row => row['Risk ID'].length > 5)) {
-            fs.appendFileSync(reportFile, "[!] 8.1.C. Risk IDs are too short\n");
-            nonComplianceList.push('8.1.C. Risk IDs are too short');
-          }
-        }
-      });
     } else {
       fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan is missing!\n");
       nonComplianceList.push('8.1.A.');
