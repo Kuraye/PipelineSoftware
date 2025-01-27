@@ -11,7 +11,7 @@ describe('PDF Content Tests', () => {
     const logFilePath = 'system.log';
     const reportFile = 'test_report.txt';
     const outputFile = 'outputfile.txt';
-    fs.writeFileSync(reportFile, "    This document exists as a report where you can see which guidelines you haven't implemented yet in the project. At the end of the list, you will be able to see which non-compliances you still have.\n");
+    fs.writeFileSync(reportFile, "    This document has the purpose of showing the results of the checks that happened while building the application.\n");
     // PDF checks
     if (fs.existsSync(pdfPath)) {
       const pdfData = await pdfParse(pdfPath);
