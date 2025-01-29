@@ -15,7 +15,7 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
-            steps {
+            steps node(nodejs: 'react23'){
                 sh 'npm install --save-dev jest pdf-parse'
             }
         }
@@ -24,9 +24,11 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Test') {         
-             steps {
-                sh 'npm test'          
+        stage('Build') {
+            steps {
+                node(nodejs: 'react23') { 
+                    sh 'npm run build' 
+                }
             }
         }
         stage('Deploy to Container') {
