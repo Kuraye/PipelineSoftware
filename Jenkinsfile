@@ -2,41 +2,37 @@ pipeline {
     agent any
 
     stages {
-        // Clean Workspace stage
         stage('Clean Workspace') {
             steps {
-                cleanWs() // Remove contents of workspace before each build
+                cleanWs() 
             }
         }
 
-        // Checkout Code stage
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/Kuraye/PipelineSoftware.git' // Fetch code from Git repository
+                git url: 'https://github.com/Kuraye/PipelineSoftware.git' 
             }
         }
 
-        // Install Dependencies stage
         stage('Install Dependencies') {
             steps {
-                node(label: 'react23') { // Use specific Node.js version for dependencies
-                    sh 'npm install --save-dev jest pdf-parse' // Install required development dependencies
+                    { 
+                    sh 'npm install --save-dev jest pdf-parse' 
                 }
             }
         }
 
-        // Build stage
+
         stage('Build') {
             steps {
-                sh 'npm run build' // Execute the build script defined in your package.json
+                sh 'npm run build' 
             }
         }
 
-        // Deploy to Container stage (Optional)
         stage('Deploy to Container') {
             when {
-                expression { // Optional condition for deployment (e.g., only on successful builds)
-                    return env.BRANCH_NAME == 'master' // Example: Deploy only on master branch
+                expression { 
+                    return env.BRANCH_NAME == 'master' 
                 }
             }
             steps {
