@@ -1,47 +1,49 @@
 pipeline {
     agent any
+
     stages {
         // Clean Workspace stage
         stage('Clean Workspace') {
             steps {
-                cleanWs()
+                cleanWs() // Remove contents of workspace before each build
             }
         }
 
-        // Other stages
-        stage('Checkout') {
+        // Checkout Code stage
+        stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/Kuraye/PipelineSoftware.git'
+                git url: 'https://github.com/Kuraye/PipelineSoftware.git' // Fetch code from Git repository
             }
         }
+
+        // Install Dependencies stage
         stage('Install Dependencies') {
-            steps node(nodejs: 'react23'){
-                sh 'npm install --save-dev jest pdf-parse'
-            }
-        }
-        stage('Build') {
             steps {
-                sh 'npm run build'
-            }
-        }
-        stage('Build') {
-            steps {
-                node(nodejs: 'react23') { 
-                    sh 'npm run build' 
+                node(nodejs: 'react23') { // Use specific Node.js version for dependencies
+                    sh 'npm install --save-dev jest pdf-parse' // Install required development dependencies
                 }
             }
         }
+
+        // Build stage
+        stage('Build') {
+            steps {
+                sh 'npm run build' // Execute the build script defined in your package.json
+            }
+        }
+
+        // Deploy to Container stage (Optional)
         stage('Deploy to Container') {
+            when {
+                expression { // Optional condition for deployment (e.g., only on successful builds)
+                    return env.BRANCH_NAME == 'master' // Example: Deploy only on master branch
+                }
+            }
             steps {
                 script {
-                    // Deploy the image to your container platform
-                    //withDockerContainer(image: 'glassfish', serverName: 'Deployserver') {
-                    //    // Additional steps for deployment (e.g., starting the container, configuring services)
-                    //    //sh 'docker start Deployserver'
-                    //}
-                    echo 'deploying...'
+                    echo 'Add deployment stage here.'
                 }
             }
         }
     }
-} 
+}
