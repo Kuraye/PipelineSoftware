@@ -19,7 +19,7 @@ pipeline {
         // Install Dependencies stage
         stage('Install Dependencies') {
             steps {
-                node(label: 'nodejs') { // Use specific Node.js version for dependencies
+                node(label: 'react23') { // Use specific Node.js version for dependencies
                     sh 'npm install --save-dev jest pdf-parse' // Install required development dependencies
                 }
             }
