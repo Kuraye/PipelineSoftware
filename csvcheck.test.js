@@ -2,7 +2,7 @@ const fs = require('fs');
 const csv = require('csv-parser');
 
 describe('CSV File Checks', () => {
-  const reportFile = 'test_report.txt';
+  const reportFile = 'testreport.txt';
   const csvFilePath = 'Risk_Treatment_Plan.csv';
   const nonComplianceList = [];
 
