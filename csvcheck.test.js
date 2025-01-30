@@ -17,8 +17,10 @@ describe('CSV File Checks', () => {
       const results = [];
       let hasDetails = false;
 
-      fs.readFile(csvFilePath, 'utf8')
-        .then((csvData) => {
+      fs.promises.readFile(csvFilePath) // Read as Buffer
+        .then(csvBuffer => {
+          const csvData = csvBuffer.toString('utf8'); // Convert to UTF-8 string
+
           parse(csvData, { columns: true, skip_empty_lines: true }, (err, records) => {
             if (err) {
               fs.appendFileSync(reportFile, `[!] 8.1.F. Error parsing CSV file: ${err.message}\n`);
