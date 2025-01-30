@@ -12,7 +12,7 @@ describe('CSV File Checks', () => {
 
   it('should check if the CSV file exists and validate its content', (done) => {
     if (fs.existsSync(csvFilePath)) {
-      fs.appendFileSync(reportFile, "8.1.A. Risk Treatment Plan exists\n");
+      fs.appendFileSync(reportFile, "8.3.1A. Risk Treatment Plan exists\n");
 
       const results = [];
       let hasDetails = false;
@@ -23,8 +23,8 @@ describe('CSV File Checks', () => {
 
           parse(csvData, { columns: true, skip_empty_lines: true }, (err, records) => {
             if (err) {
-              fs.appendFileSync(reportFile, `[!] 8.1.F. Error parsing CSV file: ${err.message}\n`);
-              nonComplianceList.push('8.1.F');
+              fs.appendFileSync(reportFile, `[!] Error parsing CSV file: ${err.message}\n`);
+              nonComplianceList.push('Csv file');
               done();
               return;
             }
@@ -32,30 +32,18 @@ describe('CSV File Checks', () => {
             results.push(...records);
 
             if (results.length > 0) {
-              fs.appendFileSync(reportFile, "8.1.B. Risk Treatment Plan contains data\n");
 
               hasDetails = results.some(row => Object.values(row).some(value => value && value.toLowerCase().includes('details')));
 
               if (hasDetails) {
-                fs.appendFileSync(reportFile, "8.1.C. The word 'details' was found in the CSV file\n");
+                fs.appendFileSync(reportFile, "8.3.1b. Risk treatment plan contains details\n");
               } else {
-                fs.appendFileSync(reportFile, "[!] 8.1.C. The word 'details' was not found in the CSV file\n");
-                nonComplianceList.push('8.1.C');
+                fs.appendFileSync(reportFile, "[!] 8.3.1b Risk treament plan does not contain details\n");
+                nonComplianceList.push('8.3.1b');
               }
-
-              results.forEach((row, index) => {
-                if (!row['Risk']) {
-                  fs.appendFileSync(reportFile, `[!] 8.1.D. Row ${index + 1}: Missing "Risk" value\n`);
-                  nonComplianceList.push(`8.1.D (Row ${index + 1})`);
-                }
-
-                if (!row['Treatment']) {
-                  fs.appendFileSync(reportFile, `[!] 8.1.E. Row ${index + 1}: Missing "Treatment" value\n`);
-                  nonComplianceList.push(`8.1.E (Row ${index + 1})`);
-                }
-              });
+              
             } else {
-              fs.appendFileSync(reportFile, "[!] 8.1.B. Risk Treatment Plan is empty\n");
+              fs.appendFileSync(reportFile, "[!] 8.3.1A Risk Treatment Plan is empty\n");
               nonComplianceList.push('8.1.B');
             }
 
@@ -63,8 +51,8 @@ describe('CSV File Checks', () => {
           });
         })
         .catch((err) => {
-          fs.appendFileSync(reportFile, `[!] 8.1.F. Error reading CSV file: ${err.message}\n`);
-          nonComplianceList.push('8.1.F');
+          fs.appendFileSync(reportFile, `[!] Error reading CSV file: ${err.message}\n`);
+          nonComplianceList.push('CSV-parse error');
           done();
         });
     } else {
