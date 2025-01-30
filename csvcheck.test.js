@@ -1,5 +1,5 @@
 const fs = require('fs');
-const csv = require('csv-parser');
+const csv = require('csv-parse');
 
 describe('CSV File Checks', () => {
   const reportFile = 'testreport.txt';
