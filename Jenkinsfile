@@ -4,38 +4,38 @@ pipeline {
     stages {
         stage('Clean Workspace') {
             steps {
-                cleanWs() 
+                cleanWs()
             }
         }
 
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/Kuraye/PipelineSoftware.git' 
+                git url: 'https://github.com/Kuraye/PipelineSoftware.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                    { 
-                    sh 'npm install --save-dev jest pdf-parse' 
-                }
+                sh 'npm install --save-dev jest pdf-parse'
             }
         }
-
 
         stage('Build') {
             steps {
-                sh 'npm run build' 
+                sh 'npm run build'
             }
         }
+
         stage('Run Tests') {
             steps {
-                sh 'npx jest' 
+                sh 'npx jest'
+            }
+        }
 
         stage('Deploy to Container') {
             when {
-                expression { 
-                    return env.BRANCH_NAME == 'master' 
+                expression {
+                    return env.BRANCH_NAME == 'master'
                 }
             }
             steps {
