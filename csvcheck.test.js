@@ -12,7 +12,7 @@ describe('CSV File Checks', () => {
 
   it('should check if the CSV file exists and validate its content', (done) => {
     if (fs.existsSync(csvFilePath)) {
-      fs.appendFileSync(reportFile, "8.3.1A. Risk Treatment Plan exists\n");
+      fs.appendFileSync(reportFile, "8.3.1a. Risk Treatment Plan exists\n");
 
       const results = [];
       let hasDetails = false;
@@ -43,7 +43,7 @@ describe('CSV File Checks', () => {
               }
               
             } else {
-              fs.appendFileSync(reportFile, "[!] 8.3.1A Risk Treatment Plan is empty\n");
+              fs.appendFileSync(reportFile, "[!] 8.3.1a Risk Treatment Plan is empty\n");
               nonComplianceList.push('8.1.B');
             }
 
@@ -56,7 +56,7 @@ describe('CSV File Checks', () => {
           done();
         });
     } else {
-      fs.appendFileSync(reportFile, "[!] 8.1.A. Risk Treatment Plan is missing!\n");
+      fs.appendFileSync(reportFile, "[!] 8.3.1a. Risk Treatment Plan is missing!\n");
       nonComplianceList.push('8.1.A');
       done();
     }
