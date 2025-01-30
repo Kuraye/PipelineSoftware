@@ -9,7 +9,7 @@ describe('PDF Content Tests', () => {
     const pdfPath = 'PolicyDocument.pdf';
     const riskTreatmentPlanPath = 'Risk_Treatment_Plan.csv';
     const logFilePath = 'system.log';
-    const reportFile = 'test_report.txt';
+    const reportFile = 'pdfchecks_report.txt';
     const outputFile = 'outputfile.txt';
     fs.writeFileSync(reportFile, "    This document has the purpose of showing the results of the checks that happened while building the application.\n");
     // PDF checks
