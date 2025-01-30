@@ -28,6 +28,9 @@ pipeline {
                 sh 'npm run build' 
             }
         }
+        stage('Run Tests') {
+            steps {
+                sh 'npx jest' 
 
         stage('Deploy to Container') {
             when {
