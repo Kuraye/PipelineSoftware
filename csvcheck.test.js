@@ -17,9 +17,9 @@ describe('CSV File Checks', () => {
       const results = [];
       let hasDetails = false;
 
-      fs.promises.readFile(csvFilePath) // Read as Buffer
+      fs.promises.readFile(csvFilePath) 
         .then(csvBuffer => {
-          const csvData = csvBuffer.toString('utf8'); // Convert to UTF-8 string
+          const csvData = csvBuffer.toString('utf8'); 
 
           parse(csvData, { columns: true, skip_empty_lines: true }, (err, records) => {
             if (err) {
